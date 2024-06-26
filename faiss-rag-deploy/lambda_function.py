@@ -21,7 +21,9 @@ def lambda_handler(event, context):
     # getting query
     logging.info(event)
     logging.info(context)
-    query = json.loads(event['body'])
+    print(event)
+    print(context)
+    query = event['body']
 
     # getting paramemeters
     modelfoldername = query.get('modelfolder')
