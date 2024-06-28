@@ -48,7 +48,6 @@ def lambda_handler(events, context):
 
     # retrieve config
     vectorstoredir = os.getenv('FAISS_CORPUS_DIR')
-    embed_model_name = query.get('embed_model_name', 'all-MiniLM-L6-v2.gguf2.f16.gguf')
     llm_name = query.get('llm_name', 'mistral.mixtral-8x7b-instruct-v0:1')
 
     # getting an instance of LLM
@@ -56,7 +55,9 @@ def lambda_handler(events, context):
     llm = get_langchain_bedrock_llm(llm_name, bedrock_runtime)
 
     # loading the embedding model
-    embedding_model = GPT4AllEmbeddings(model_name=embed_model_name)
+    # the embedding model must be saved to EFS first
+    embed_path = os.getenv('EMBED_PATH')
+    embedding_model = GPT4AllEmbeddings(model_name=embed_path)
 
     # loading vector database
     db = FAISS.load_local(vectorstoredir, embedding_model, allow_dangerous_deserialization=True)
