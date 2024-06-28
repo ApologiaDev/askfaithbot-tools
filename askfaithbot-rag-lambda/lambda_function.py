@@ -5,7 +5,7 @@ import logging
 
 import boto3
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.embeddings.gpt4all import GPT4AllEmbeddings
+from langchain.embeddings import HuggingFaceEmbeddings
 from langchain_aws.llms.bedrock import Bedrock
 from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
@@ -57,10 +57,12 @@ def lambda_handler(events, context):
     # loading the embedding model
     # the embedding model must be saved to EFS first
     embed_path = os.getenv('EMBED_PATH')
-    embedding_model = GPT4AllEmbeddings(model_name=embed_path)
+    embeddings_model = HuggingFaceEmbeddings(model_name=embed_path)
+    if embeddings_model.client.tokenizer.pad_token is None:
+        embeddings_model.client.tokenizer.pad_token = embeddings_model.client.tokenizer.eos_token
 
     # loading vector database
-    db = FAISS.load_local(vectorstoredir, embedding_model, allow_dangerous_deserialization=True)
+    db = FAISS.load_local(vectorstoredir, embeddings_model, allow_dangerous_deserialization=True)
     retriever = db.as_retriever()
 
     # getting the chain
