@@ -5,7 +5,7 @@ import logging
 
 import boto3
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_aws.llms.bedrock import Bedrock
 from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
@@ -51,8 +51,13 @@ def lambda_handler(events, context):
     llm_name = query.get('llm_name', 'mistral.mixtral-8x7b-instruct-v0:1')
 
     # getting an instance of LLM
+    llm_config = query.get('llm_config', {
+        "max_tokens": 4096,
+        "temperature": 0.7,
+        "top_p": 0.8
+    })
     bedrock_runtime = get_bedrock_runtime('us-east-1')
-    llm = get_langchain_bedrock_llm(llm_name, bedrock_runtime)
+    llm = get_langchain_bedrock_llm(llm_name, bedrock_runtime, config=llm_config)
 
     # loading the embedding model
     # the embedding model must be saved to EFS first
