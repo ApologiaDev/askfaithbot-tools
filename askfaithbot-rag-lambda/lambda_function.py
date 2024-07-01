@@ -5,7 +5,7 @@ import logging
 
 import boto3
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_aws.llms.bedrock import Bedrock
 from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
@@ -62,19 +62,25 @@ def lambda_handler(events, context):
     # loading the embedding model
     # the embedding model must be saved to EFS first
     embed_path = os.getenv('EMBED_PATH')
+    print('Embedding path: {}'.format(embed_path))
+    print(' Exists? {}'.format(os.path.exists(embed_path)))
+    print(' Its parent directory exists? {}'.format(os.path.dirname(embed_path)))
     embeddings_model = HuggingFaceEmbeddings(model_name=embed_path)
     if embeddings_model.client.tokenizer.pad_token is None:
         embeddings_model.client.tokenizer.pad_token = embeddings_model.client.tokenizer.eos_token
 
     # loading vector database
+    print('Loading vector database: {} (Exists? {})'.format(vectorstoredir, os.path.isdir(vectorstoredir)))
     db = FAISS.load_local(vectorstoredir, embeddings_model, allow_dangerous_deserialization=True)
     retriever = db.as_retriever()
 
     # getting the chain
+    print('Making langchain')
     qa = RetrievalQA.from_chain_type(llm=llm, chain_type='stuff', retriever=retriever, return_source_documents=True)
 
     # get the results
     results = qa({'query': question})
+    print(results)
 
     # return
     return {'statusCode': 200, 'body': results}
