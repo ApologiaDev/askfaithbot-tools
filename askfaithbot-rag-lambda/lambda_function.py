@@ -65,6 +65,10 @@ def lambda_handler(events, context):
     print('Embedding path: {}'.format(embed_path))
     print(' Exists? {}'.format(os.path.exists(embed_path)))
     print(' Its parent directory exists? {}'.format(os.path.isdir(os.path.dirname(embed_path))))
+    print(' Its parent directory of parent directory exists? {} {}'.format(
+        os.path.dirname(os.path.dirname(embed_path)),
+        os.path.isdir(os.path.dirname(os.path.dirname(embed_path)))
+    ))
     embeddings_model = HuggingFaceEmbeddings(model_name=embed_path)
     if embeddings_model.client.tokenizer.pad_token is None:
         embeddings_model.client.tokenizer.pad_token = embeddings_model.client.tokenizer.eos_token
