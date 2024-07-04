@@ -4,6 +4,7 @@ import json
 import logging
 
 import boto3
+from botocore.config import Config
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_aws.llms.bedrock import Bedrock
@@ -56,7 +57,7 @@ def lambda_handler(events, context):
         "temperature": 0.7,
         "top_p": 0.8
     })
-    bedrock_runtime = get_bedrock_runtime('us-east-1')
+    bedrock_runtime = get_bedrock_runtime('us-east-1', config=Config(read_timeout=1024))
     llm = get_langchain_bedrock_llm(llm_name, bedrock_runtime, config=llm_config)
 
     # loading the embedding model
