@@ -7,7 +7,7 @@ import boto3
 from botocore.config import Config
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_aws.llms.bedrock import Bedrock
+from langchain_aws.llms.bedrock import BedrockLLM
 from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from dotenv import load_dotenv
@@ -28,7 +28,7 @@ def get_bedrock_runtime(region_name, *args, **kwargs):
 
 
 def get_langchain_bedrock_llm(model_id, client, *args, **kwargs):
-    return Bedrock(model_id=model_id, client=client, *args, **kwargs)
+    return BedrockLLM(model_id=model_id, client=client, *args, **kwargs)
 
 
 def lambda_handler(events, context):
@@ -78,12 +78,14 @@ def lambda_handler(events, context):
     print('Loading vector database: {} (Exists? {})'.format(vectorstoredir, os.path.isdir(vectorstoredir)))
     db = FAISS.load_local(vectorstoredir, embeddings_model, allow_dangerous_deserialization=True)
     retriever = db.as_retriever()
+    print(' -> Vector database loaded and retrieved initialized.')
 
     # getting the chain
     print('Making langchain')
     qa = RetrievalQA.from_chain_type(llm=llm, chain_type='stuff', retriever=retriever, return_source_documents=True)
 
     # get the results
+    print('Grabbing results...')
     results = qa({'query': question})
     print(results)
 
