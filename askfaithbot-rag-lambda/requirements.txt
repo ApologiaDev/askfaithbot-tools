@@ -4,5 +4,6 @@ python-dotenv
 langchain
 langchain-aws
 langchain-community
-gpt4all
+langchain-huggingface
 faiss-cpu
+sentence-transformers
