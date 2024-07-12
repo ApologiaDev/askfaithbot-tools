@@ -42,10 +42,12 @@ def lambda_handler(events, context):
     # get query
     logging.info(events)
     print(events)
+    rawdict = False
     if isinstance(events['body'], dict):
         logging.info("dictionary")
         print("dictionary")
         query = events['body']
+        rawdict = True
     else:
         logging.info("string")
         print("string")
@@ -102,7 +104,7 @@ def lambda_handler(events, context):
     }
 
     # return
-    return {'statusCode': 200, 'body': result_dict}
+    return {'statusCode': 200, 'body': result_dict if rawdict else json.dumps(result_dict)}
 
 
 # Reference: https://stackoverflow.com/questions/58717176/lambda-in-vpc-cannot-connect-to-aws-services
