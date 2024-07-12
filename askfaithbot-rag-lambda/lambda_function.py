@@ -31,6 +31,13 @@ def get_langchain_bedrock_llm(model_id, client, *args, **kwargs):
     return BedrockLLM(model_id=model_id, client=client, *args, **kwargs)
 
 
+def convert_langchaindoc_to_dict(doc):
+    return {
+      'page_content': doc.page_content,
+      'metadata': doc.metadata
+    }
+
+
 def lambda_handler(events, context):
     # get query
     logging.info(events)
@@ -86,8 +93,16 @@ def lambda_handler(events, context):
 
     # get the results
     print('Grabbing results...')
-    results = qa({'query': question})
-    print(results)
+    result_json = qa({'query': question})
+    print(result_json)
+    result_dict = {
+        'query': result_json['query'],
+        'answer': result_json['result'],
+        'source_documents': [convert_langchaindoc_to_dict(doc) for doc in result_json['source_documents']]
+    }
 
     # return
-    return {'statusCode': 200, 'body': results}
+    return {'statusCode': 200, 'body': result_dict}
+
+
+# Reference: https://stackoverflow.com/questions/58717176/lambda-in-vpc-cannot-connect-to-aws-services
