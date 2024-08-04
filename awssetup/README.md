@@ -17,4 +17,24 @@
 
 Then after that, whenever login to AWS for admin access, use this account.
 
-##
+## Create and Configure a VPC
+
+Login with your admin account you just created.
+
+1. Go to VPC.
+2. Click "Your VPCs".
+3. Click "Create VPC".
+4. Choose the radio button "VPC and more".
+5. Enter a name for name tag auto-generation.
+6. Click other things according to your preference, or simply go to the next step.
+7. Click "Create VPC".
+
+After a while, the VPC is created. Then create an endpoint for Bedrock runtimes.
+
+1. Click "Endpoints".
+2. Enter a name tag for the endpoint.
+3. Choose the radio button "com.amazonaws.us-east-1.bedrock-runtime".
+4. In the select box under VPC, choose the VPC you just created.
+5. Choose one private subnets.
+6. Choose security group that is available.
+7. Click "Create endpoint".
