@@ -38,3 +38,28 @@ After a while, the VPC is created. Then create an endpoint for Bedrock runtimes.
 5. Choose one private subnets.
 6. Choose security group that is available.
 7. Click "Create endpoint".
+
+## Create EFS
+
+First create the file system.
+
+1. Go to EFS. Click "File systems". Then click "Create file system".
+2. Give a name to the file system. And choose the VPC you created. Click "Create".
+
+Then create the access points.
+
+1. Click "Access points". Click "Create access point".
+2. Choose the EFS file system you just created.
+3. Give it a name.
+4. Set the root directory path to be "/lambda". 
+5. Under POSIX user, set User ID to be "1001", Group ID to be "1001", Secondaruy group IDs to be "0".
+6. Under Root directory creation permissions, set Owner user ID to be "1001", Owner Group ID to be "1001", and Permissions to be "777".
+7. Click "Create access point".
+
+# Create an EC2 instance 
+
+Now we create an EC2 instance for file transfer. 
+
+1. Go to EC2. 
+2. Click "Instances". Click "Launch instances".
+3. 
