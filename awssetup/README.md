@@ -62,4 +62,14 @@ Now we create an EC2 instance for file transfer.
 
 1. Go to EC2. 
 2. Click "Instances". Click "Launch instances".
-3. 
+3. Give a name. Choose "Amazon Linux"... any free tier would work. Use "t2.micro".
+4. Create new key pair if there is none or you want a new one. Otherwise, choose an existing key pair.
+5. Use existing security group.
+6. In Network Settings, set the VPC to be the one you just created.
+7. Enable "Auti-assign public IP". Select both default security groups.
+6. Set storage to be 64GiB.
+7. In Storage (volumes), click "Advanced". Click "Show Details" in File systems
+8. Click the radio button "EFS". Choose the EFS you just created. Set mount point to be "/mnt/efs/fs1".
+9. Click "Launch instance".
+
+
