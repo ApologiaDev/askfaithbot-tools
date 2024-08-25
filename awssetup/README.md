@@ -3,7 +3,7 @@
 ## Create your admin account
 
 1. Login the root account.
-2. Go to "IAM".
+2. Go to IAM.
 3. Go to "Users", and click "Create user".
 4. Type your username. Check "Provide user access to the AWS Management Console".
 5. Choose "I want to create an IAM user" radio button.
@@ -14,6 +14,15 @@
 10. Click "Next".
 11. Click "Create user".
 12. Click "Download .csv file". Save this file to a safe folder in your local computer.
+
+On the other hand, do not forget to create the access key.
+
+1. Go to IAM, and the click "Users".
+2. Click on the account you just created.
+3. Click "Create access key".
+4. Choose radio button "Command Line Interface (CLI)". Check "I understand the above recommendation and want to proceed to create an access key." Click "Next".
+5. Type a tag value that you understand. Click "Crete access key".
+6. The access tokens and secrets is on the page. And click "Download .csv file" for your future reference (recommended). 
 
 Then after that, whenever login to AWS for admin access, use this account.
 
@@ -56,7 +65,7 @@ Then create the access points.
 6. Under Root directory creation permissions, set Owner user ID to be "1001", Owner Group ID to be "1001", and Permissions to be "777".
 7. Click "Create access point".
 
-# Create an EC2 instance 
+## Create an EC2 instance 
 
 Now we create an EC2 instance for file transfer. 
 
@@ -73,4 +82,56 @@ Now we create an EC2 instance for file transfer.
 8. Click the radio button "EFS". Choose the EFS you just created. Set mount point to be "/mnt/efs/fs1".
 9. Click "Launch instance".
 
+After doing this, the EC2 instance is running. If you are not using it,
+then you can stop the instance without terminating it.
+Whenever you need to start the instance, you can login with the 
+downloaded PEM file using `ssh`, like:
+
+```bazaar
+ssh -i <path of the PEM file> ec2-user@<public IPv4 address>
+```
+
+## Installing Git and Docker in the EC2 instance
+
+Start the EC2 instance if it is not running. And login 
+to the instance using `ssh` using the command above.
+
+1. Enter `sudo yum update` and press Enter.
+2. Enter `sudo yum install -y git` and press Enter.
+3. Enter `sudo yum install -y docker` and press Enter.
+
+## Clone the Git repository to the EC2 instance
+
+In the instance, create ny directory you desired. And at
+your desired location, clone the repository by running
+
+```bazaar
+git clone https://github.com/ApologiaDev/askfaithbot-tools.git
+```
+
+And we need to start the Docker engine by running
+
+```bazaar
+systemctl start docker
+```
+
+Remember to add the access tokens and key secrets by 
+running `sudo aws configure`. They tokens and key secrets can
+be found in the .CSV file downloaded when you created
+your admin account.
+
+## Create an Elastic Container Registry (ECR) repository
+
+1. Go to Amazon Elastic Container Service.
+2. Click "Amazon ECR". It might display a page if it is your first time. If so, click "Create repository".
+3. Put the name (e.g., "askfaithbot-ecr").
+4. Click "Create".
+
+The repository needs to be created only once. However, it can be 
+updated many times as long as you need to. To push the repository,
+click on the repository, and click "View Push Commands". There are
+four command lines. They are the commands you need to run in the 
+subdirectory "askfaithbot-rag-lambda" of the Git repository you just 
+cloned to the EC2 instance. Remember to add "sudo" to every line (and there 
+should be two "sudo"'s for the first command).
 
