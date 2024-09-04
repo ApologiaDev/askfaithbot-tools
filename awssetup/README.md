@@ -135,3 +135,8 @@ subdirectory "askfaithbot-rag-lambda" of the Git repository you just
 cloned to the EC2 instance. Remember to add "sudo" to every line (and there 
 should be two "sudo"'s for the first command).
 
+## Creating Lambda function for deplying database 
+
+1. Go to AWS Lambda. If it is the first time, click "Create a function".
+2. Choose radio button "Author from scratch". Put a function name.
+3. Choose Python 3.x to be the runtime.
