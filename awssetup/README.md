@@ -66,6 +66,9 @@ your desired location, clone the repository by running
 git clone https://github.com/ApologiaDev/askfaithbot-tools.git
 ```
 
+The clone needs to be done once only. Any changes can be updated by 
+pulling the repository by `git pull`.
+
 And we need to start the Docker engine by running
 
 ```bazaar
@@ -91,3 +94,41 @@ four command lines. They are the commands you need to run in the
 subdirectory "askfaithbot-rag-lambda" of the Git repository you just 
 cloned to the EC2 instance. Remember to add "sudo" to every line (and there 
 should be two "sudo"'s for the first command).
+
+## Create an IAM Role for the Lambda Function
+
+1. Go to IAM. 
+2. Click "Roles".
+3. Click "Create role".
+4. Click the radio button "AWS service".
+5. In the drop down meny "Service or use case", choose "Lambda".
+6. Click "Next".
+7. Check the following Permissions policies: 
+   - AmazonBedrockFullAccess
+   - AmazonVPCCrossAccountNetworkInterfaceOperations
+   - AWSLambdaBasicExecutionRole
+8. CLick "Next".
+9. Give a role name.
+10. Click "Create role".
+
+## Create the Lambda Function
+
+1. Go to AWS Lambda. If it is your first time, click "Create a function". 
+2. Click "Container image".
+3. Put a function name.
+4. Under "Container image URl", click "Browse images".
+5. Select the image repository you created above. And click on the image you created. Click "Select image".
+6. Click radio button "Use an existing role". Choose the IAM Role you just created above.
+7. Click "Create function".
+
+After the function is created,
+
+1. Click the tab "Configuration", go to "General configuration". Click "Edit". Set:
+   - Timeout: more than 5 minutes.
+   - Memory: 3008 MB
+   - Ephemeral storage: 4096 MB
+2. Click "Save".
+3. Click "Environment variables". Click "Edit". Set the following environment variables:
+   - QDRANT_URL: URL of your QDRant repository.
+   - QDRANT_API_KEY: the API key
+4. Click "Save".
