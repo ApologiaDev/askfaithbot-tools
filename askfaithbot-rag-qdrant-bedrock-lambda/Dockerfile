@@ -14,7 +14,6 @@ RUN apt-get update && \
   cmake \
   unzip \
   libcurl4-openssl-dev \
-  libstdc++6 \
   glibc
 
 RUN pip install -U pip
