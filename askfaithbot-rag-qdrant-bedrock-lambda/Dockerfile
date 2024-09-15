@@ -6,7 +6,6 @@ WORKDIR /code
 
 RUN apt-get update && \
   apt-get install -y \
-  gcc \
   g++ \
   libc6 \
   gfortran \
