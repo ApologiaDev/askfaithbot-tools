@@ -14,7 +14,6 @@ RUN apt-get update && \
   cmake \
   unzip \
   libcurl4-openssl-dev \
-  glibc
 
 RUN pip install -U pip
 RUN pip install -r requirements.txt
