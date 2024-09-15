@@ -52,7 +52,7 @@ def lambda_handler(events, context):
         logging.info("string")
         print("string")
         query = json.loads(events['body'])
-    if os.path.isdir(os.getenv('GPT4ALLMODELPATH')):
+    if not os.path.isdir(os.getenv('GPT4ALLMODELPATH')):
         os.makedirs(os.getenv('GPT4ALLMODELPATH'))
 
     # get query question
