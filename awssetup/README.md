@@ -131,4 +131,5 @@ After the function is created,
 3. Click "Environment variables". Click "Edit". Set the following environment variables:
    - QDRANT_URL: URL of your QDRant repository.
    - QDRANT_API_KEY: the API key
+   - GPT4ALLMODELPATH: `/tmp/gpt4all`
 4. Click "Save".
