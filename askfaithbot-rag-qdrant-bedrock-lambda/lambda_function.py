@@ -52,14 +52,12 @@ def lambda_handler(events, context):
         logging.info("string")
         print("string")
         query = json.loads(events['body'])
-    if not os.path.isdir(os.getenv('GPT4ALLMODELPATH')):
-        os.makedirs(os.getenv('GPT4ALLMODELPATH'))
 
     # get query question
     question = query['question']
 
     # retrieve config
-    llm_name = query.get('llm_name', 'mistral.mixtral-8x7b-instruct-v0:1')
+    llm_name = query.get('llm_name', os.getenv('DEFAULTLLM'))
 
     # getting an instance of LLM
     llm_config = query.get('llm_config', {
@@ -72,8 +70,10 @@ def lambda_handler(events, context):
 
     # loading the embedding model
     # the embedding model must be saved to EFS first
-    embed_model_name = 'all-MiniLM-L6-v2.gguf2.f16.gguf'
-    embedding_model = GPT4AllEmbeddings(model_name=embed_model_name, model_path=os.getenv('GPT4ALLMODELPATH'))
+    embed_model_name = os.getenv('EMBEDMODELFILENAME')
+    s3 = boto3.resource('s3')
+    s3.Bucket(os.getenv('EMBEDMODELS3BUCKET')).download_file(embed_model_name, os.path.join('/', 'tmp', embed_model_name))
+    embedding_model = GPT4AllEmbeddings(model_name=os.path.join('/', 'tmp', embed_model_name))
 
     # loading vector database
     qdrant_url = os.getenv('QDRANT_URL')
