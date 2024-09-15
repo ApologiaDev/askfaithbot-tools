@@ -6,13 +6,16 @@ WORKDIR /code
 
 RUN apt-get update && \
   apt-get install -y \
+  gcc \
   g++ \
   libc6 \
   gfortran \
   make \
   cmake \
   unzip \
-  libcurl4-openssl-dev
+  libcurl4-openssl-dev \
+  libstdc++6 \
+  glibc
 
 RUN pip install -U pip
 RUN pip install -r requirements.txt
