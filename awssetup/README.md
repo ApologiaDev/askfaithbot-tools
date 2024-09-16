@@ -107,9 +107,19 @@ should be two "sudo"'s for the first command).
    - AmazonBedrockFullAccess
    - AmazonVPCCrossAccountNetworkInterfaceOperations
    - AWSLambdaBasicExecutionRole
+   - AmazonS3FullAccess
 8. CLick "Next".
 9. Give a role name.
 10. Click "Create role".
+
+## Requesting Access to LLM
+
+1. Go to Amazon Bedrock. If it is the first time, click "Get started".
+2. Click "Base models".
+3. Choose "Mistral 7B Instruct" (or other model you want access). Click on it.
+4. Click "Request model access". Follow their instructions. Remember to click "Submit" at the end.
+
+You will get an e-mail notification about the approval.
 
 ## Create the Lambda Function
 
@@ -131,5 +141,7 @@ After the function is created,
 3. Click "Environment variables". Click "Edit". Set the following environment variables:
    - QDRANT_URL: URL of your QDRant repository.
    - QDRANT_API_KEY: the API key
-   - GPT4ALLMODELPATH: `/tmp/gpt4all`
+   - EMBEDMODELS3BUCKET: askfaith-embeddings
+   - EMBEDMODELFILENAME: all-MiniLM-L6-v2.gguf2.f16.gguf
+   - DEFAULTLLM: mistral.mixtral-8x7b-instruct-v0:1
 4. Click "Save".
