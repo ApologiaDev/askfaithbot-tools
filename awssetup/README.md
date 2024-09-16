@@ -143,5 +143,5 @@ After the function is created,
    - QDRANT_API_KEY: the API key
    - EMBEDMODELS3BUCKET: askfaith-embeddings
    - EMBEDMODELFILENAME: all-MiniLM-L6-v2.gguf2.f16.gguf
-   - DEFAULTLLM: mistral.mixtral-8x7b-instruct-v0:1
+   - DEFAULTLLM: mistral.mistral-7b-instruct-v0:2
 4. Click "Save".
