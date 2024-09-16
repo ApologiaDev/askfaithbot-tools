@@ -73,7 +73,13 @@ def lambda_handler(events, context):
     embed_model_name = os.getenv('EMBEDMODELFILENAME')
     s3 = boto3.resource('s3')
     s3.Bucket(os.getenv('EMBEDMODELS3BUCKET')).download_file(embed_model_name, os.path.join('/', 'tmp', embed_model_name))
-    embedding_model = GPT4AllEmbeddings(model_name=embed_model_name, model_path=os.path.join('/', 'tmp'))
+    embedding_model = GPT4AllEmbeddings(
+        model_name=embed_model_name,
+        gpt4all_kwargs={
+            'model_path': os.path.join('/', 'tmp'),
+            'allow_download': False
+        }
+    )
 
     # loading vector database
     qdrant_url = os.getenv('QDRANT_URL')
