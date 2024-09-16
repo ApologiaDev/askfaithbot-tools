@@ -145,3 +145,17 @@ After the function is created,
    - EMBEDMODELFILENAME: all-MiniLM-L6-v2.gguf2.f16.gguf
    - DEFAULTLLM: mistral.mistral-7b-instruct-v0:2
 4. Click "Save".
+
+## Creating API
+
+After creating the Lambda function, we add a trigger from the API Gateway.
+
+1. At the Lambda function created, click "Add trigger".
+2. Click "API Gateway".
+3. Click radio button "Create a new API".
+4. Click radio button "REST API".
+5. In the drop menu under "Security", choose "Open".
+6. Click "Add".
+
+Then an API is created. Click on "API Gateway", and then the API you created. You get to their API Gateway page.
+
