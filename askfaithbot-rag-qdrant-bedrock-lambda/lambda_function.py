@@ -100,7 +100,7 @@ def lambda_handler(events, context):
 
     # get the results
     print('Grabbing results...')
-    result_json = qa({'query': question})
+    result_json = qa.invoke({'query': question})
     print(result_json)
     result_dict = {
         'query': result_json['query'],
@@ -110,5 +110,3 @@ def lambda_handler(events, context):
 
     # return
     return {'statusCode': 200, 'body': result_dict if rawdict else json.dumps(result_dict)}
-
-
