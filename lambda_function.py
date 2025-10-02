@@ -105,8 +105,8 @@ def lambda_handler(events, context):
     result_json = rag_chain.invoke({'input': question})
     logger.info(result_json)
     result_dict = {
-        'query': result_json['query'],
-        'answer': result_json['result'],
+        'query': result_json['input'],
+        'answer': result_json['answer'],
         'context': [convert_langchaindoc_to_dict(doc) for doc in result_json['context']]
     }
 
