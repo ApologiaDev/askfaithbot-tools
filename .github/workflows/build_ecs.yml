@@ -2,6 +2,8 @@ name: Build and Push Docker Image
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: [ master ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,7 +14,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      - run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR-URL
-      - run: docker build -t $ECR_NAME .
-      - run: docker tag "${ECR_NAME}:latest" "${ECR_URL}/${ECR_NAME}:latest"
-      - run: docker push "${ECR_URL}/${ECR_NAME}:latest"
+      - run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ vars.ECR_URL }}
+      - run: docker build -t ${{ vars.ECR_NAME }} .
+      - run: docker tag "${{ vars.ECR_NAME }}:latest" "${{ vars.ECR_URL }}/${{ vars.ECR_NAME }}:latest"
+      - run: docker push "${{ vars.ECR_URL }}/${{ vars.ECR_NAME }}:latest"
