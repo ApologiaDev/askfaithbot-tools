@@ -1,15 +1,11 @@
 FROM python:3.11
 
-ADD askfaithbot-rag-qdrant-bedrock-lambda /code
+ADD . /code
 
 WORKDIR /code
 
 RUN apt-get update && \
   apt-get install -y \
-  gcc \
-  g++ \
-  libc6 \
-  gfortran \
   make \
   cmake \
   unzip \
