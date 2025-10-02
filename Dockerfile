@@ -1,6 +1,6 @@
 FROM python:3.11
 
-ADD . /code
+ADD askfaithbot-rag-qdrant-bedrock-lambda /code
 
 WORKDIR /code
 
